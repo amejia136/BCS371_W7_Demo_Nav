@@ -3,6 +3,8 @@ package edu.farmingdale.bcs371_w7_demo_nav
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +17,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -27,10 +30,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.farmingdale.bcs371_w7_demo_nav.ui.theme.BCS371_W7_Demo_NavTheme
+
 
 class MainActivity2 : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,53 +56,74 @@ class MainActivity2 : ComponentActivity() {
 
 @Composable
 fun BasicOperations(name: String, modifier: Modifier = Modifier) {
-    val  context = LocalContext.current
+    val context = LocalContext.current
 
     Column {
         Spacer(modifier = Modifier.padding(50.dp))
-        Button( onClick = {
-            val newInt = Intent(Intent.ACTION_VIEW)
-            newInt.setData(Uri.parse("geo:0,0?q=Farmingdale State College, NY"))
-            context.startActivity(newInt)
-        },
-            modifier= Modifier.padding(start = 40.dp, end = 40.dp)) {
-            Icon( imageVector = Icons.Default.LocationOn, contentDescription = "Location")
+        Button(
+            onClick = {
+                val newInt = Intent(Intent.ACTION_VIEW)
+                newInt.setData(Uri.parse("geo:0,0?q=Farmingdale State College, NY"))
+                context.startActivity(newInt)
+            },
+            modifier = Modifier.padding(start = 40.dp, end = 40.dp)
+        ) {
+            Icon(imageVector = Icons.Default.LocationOn, contentDescription = "Location")
             Text("Show me  Farmingdale")
         }
         HorizontalDivider(thickness = DividerDefaults.Thickness)
 
-        Button( onClick = {
-            val newInt = Intent(Intent.ACTION_VIEW)
-            // ToDo 1: create implicit intent to open a web page or call a phone number
-            context.startActivity(newInt)
-        },
-            modifier= Modifier.padding(start = 40.dp, end = 40.dp)) {
-            Icon( imageVector = Icons.Default.Phone, contentDescription = "Phone")
+        Button(
+            onClick = {
+                val newInt = Intent(Intent.ACTION_VIEW)
+                // ToDo 1: create implicit intent to open a web page or call a phone number
+                newInt.setData(Uri.parse("tel:+5160000000"))
+                context.startActivity(newInt)
+            },
+            modifier = Modifier.padding(start = 40.dp, end = 40.dp)
+        ) {
+            Icon(imageVector = Icons.Default.Phone, contentDescription = "Phone")
             Text("Call Me")
         }
 
         HorizontalDivider(thickness = DividerDefaults.Thickness)
 
-        Button( onClick = {
-            // ToDo 2: create explicit intent to open a new activity
-            
-        },
-            modifier= Modifier.padding(start = 40.dp, end = 40.dp)) {
-            Icon( imageVector = Icons.Default.Info, contentDescription = "Phone")
+        Button(
+            onClick = {
+                // ToDo 2: create explicit intent to open a new activity
+                context.startActivity(Intent(context, MainActivity::class.java))
+            },
+            // ToDo 3: Change the spacing between the icons and text to be 10dp
+            modifier = Modifier.padding(start = 10.dp)
+        ) {
+            Icon(imageVector = Icons.Default.Info, contentDescription = "Phone")
             Text("Go To activity 2")
         }
 
-        // ToDo 3: Change the spacing between the icons and text to be 10dp
         // ToDo 4: Add a horizontal divider between the buttons
 
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 8.dp),
+            thickness = 1.dp,
+            color = Color.Black
+        )
 
         // ToDo 5: This switch is not working fix it
+        var trueChecked by remember {
+            mutableStateOf(true)
+        }
         Switch(
-            checked = true,
-            onCheckedChange = {  },
+            checked = trueChecked,
+            onCheckedChange = { checked ->
+                if (checked) {
+                    trueChecked = true
+                } else {
+                    // ToDo 6: when the switch is off, disable the buttons
+                    trueChecked = false
+                }
+            },
             modifier = Modifier.padding(10.dp),
         )
-        // ToDo 6: when the switch is off, disable the buttons
     }
 
 
